@@ -1,0 +1,1 @@
+let app = angular.module('cashmateApp', ['ngRoute', 'ngResource', 'ngLodash', 'templatescache', 'LocalStorageModule']);

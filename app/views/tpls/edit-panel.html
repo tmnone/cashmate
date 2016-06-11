@@ -1,0 +1,9 @@
+<div class="edit-panel">
+  <span class="edit-panel-link" ng-click="toggle()">{{editData}}</span>
+  <div class="edit-panel-form form-inline">
+    <input type="text" class="form-control input-sm" ng-list ng-model="editData" ng-show="isArray">
+    <input type="text" class="form-control input-sm" ng-model="editData" ng-hide="isArray">
+    <button class="btn btn-sm btn-primary" ng-click="save(); toggle()">Ok</button>
+    <button class="btn btn-sm btn-default" ng-click="toggle()"><span class="fa fa-times"></span></button>
+  </div>
+</div>

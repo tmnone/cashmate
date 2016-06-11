@@ -1,0 +1,37 @@
+<h1>
+  Transactions 
+  <small><a class="small btn btn-sm btn-default" href="/#/transaction/new">New transaction</a></small>
+</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>user_id</th>
+      <th>label_ids</th>
+      <th>labels</th>
+      <th>date</th>
+      <th>value</th>
+      <th>note</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="transaction in transactions">
+      <td>{{transaction.objectId}}</td>
+      <td>{{transaction.user_id}}</td>
+      <td>{{transaction.label_ids}}</td>
+      <td>
+        <edit-panel data-edit-data="transaction.labels" data-array="true" data-on-save="updateLabel(transaction, editData)"></edit-panel>
+      </td>
+      <td>{{transaction.date.iso | date}}</td>
+      <td>
+        <edit-panel data-edit-data="transaction.value" data-on-save="updateValue(transaction, editData)"></edit-panel>
+      </td>
+      <td>
+        <edit-panel data-edit-data="transaction.note" data-on-save="updateNote(transaction, editData)"></edit-panel>
+      </td>
+      <td><a class="btn btn-xs btn-primary" ng-href="/#/transaction/edit/{{transaction.objectId}}">Edit</a></td>
+    </tr>
+  </tbody>
+</table>

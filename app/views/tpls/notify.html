@@ -1,0 +1,8 @@
+<div class="notifies-wrapper fade" ng-class="{'in': notifies.length}">
+  <div ng-repeat="notify in notifies">
+    <div class="alert alert-{{notify.type}} alert-dismissible">
+      <button type="button" class="close" ng-click="removeNotify(notify)">×</button>
+      <span>{{notify.text}}</span>
+    </div>  
+  </div>
+</div>

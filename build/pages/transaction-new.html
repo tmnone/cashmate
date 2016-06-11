@@ -1,0 +1,19 @@
+<h1>
+  New Transaction
+  <small><a class="small btn btn-sm btn-default" href="/">Back</a></small>
+</h1>
+<form action="#">
+  <div class="form-group">
+    <label>Value</label>
+    <input type="number" class="form-control" ng-model="newTransaction.value" />
+  </div>
+  <div class="form-group">
+    <label>Labels</label>
+    <input type="text" class="form-control" ng-model="newTransaction.labels" ng-list />
+  </div>
+  <div class="form-group">
+    <label>Note</label>
+    <textarea class="form-control" ng-model="newTransaction.note"></textarea>
+  </div>
+  <button type="button" class="btn btn-lg btn-primary" ng-click="addTransaction()">Add Transaction</button>
+</form>

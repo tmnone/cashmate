@@ -1,0 +1,23 @@
+<h1>
+  Edit Transaction
+  <small><a class="small btn btn-sm btn-default" href="/">Back</a></small>
+</h1>
+<pre>
+  {{editable}}
+</pre>
+<form action="#">
+  <div class="form-group">
+    <label>Value </label>
+    <input type="text" class="form-control" ng-model="editable.value" />
+  </div>
+  <div class="form-group">
+    <label>Labels</label>
+    <input type="text" class="form-control" ng-model="editable.labels" ng-list/>
+  </div>
+  <div class="form-group">
+    <label>Note</label>
+    <textarea class="form-control" ng-model="editable.note">{{editable.note}}</textarea>
+  </div>
+  <button type="button" class="btn btn-lg btn-primary" ng-click="updateTransaction()">Update Transaction</button>
+  <button type="button" class="btn btn-lg btn-default" ng-click="reset()">Reset</button>
+</form>

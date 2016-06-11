@@ -1,0 +1,31 @@
+{
+  "data": [
+    {
+      "id": "0",
+      "label_ids": "0",
+      "labels": ["label0", "label01"],
+      "user_id": "0",
+      "date": "Tue May 17 2016 18:17:10 GMT+0300 (MSK)",
+      "value": "100",
+      "note": "Some note"
+    },
+    {
+      "id": "1",
+      "label_ids": "0",
+      "labels": ["label1", "label11"],
+      "user_id": "0",
+      "date": "Tue May 17 2016 18:18:10 GMT+0300 (MSK)",
+      "value": "200",
+      "note": "Some note"
+    },
+    {
+      "id": "2",
+      "label_ids": "0",
+      "labels": ["label2", "label21"],
+      "user_id": "0",
+      "date": "Tue May 17 2016 18:19:10 GMT+0300 (MSK)",
+      "value": "300",
+      "note": "Some note"
+    }
+  ]
+}
