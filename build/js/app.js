@@ -13,6 +13,7 @@ app.config(['$routeProvider', '$locationProvider', 'localStorageServiceProvider'
   }).otherwise({
     redirectTo: '/',
     templateUrl: '../pages/index.html',
+    // resolve: [''],
     controller: 'IndexPageController'
   });
   $locationProvider.html5Mode();
@@ -31,11 +32,26 @@ var API_HOST = 'https://parseapi.back4app.com/classes';
 // let IP_ID = '60w8hWaSMAJRkQkPEQEnz4mDnK64TDibBaYMPH1u';
 'use strict';
 
-app.controller('IndexPageController', ['$scope', 'transactionRepository', 'notifyService', function ($scope, transactionRepository, notify) {
+app.controller('IndexPageController', ['$q', '$scope', 'transactionRepository', 'notifyService', function ($q, $scope, transactionRepository, notify) {
+
   $scope.transactions = [];
-  transactionRepository.readAll().then(function (res) {
-    $scope.transactions = res.results;
-  });
+
+  // $scope.totalItems = 0;
+  $scope.itemStart = 0;
+  $scope.itemsShow = 5;
+  $scope.activePage = 1;
+
+  $scope.renderPage = function (page) {
+    $scope.activePage = page;
+    $scope.itemStart = $scope.itemsShow * ($scope.activePage - 1);
+    transactionRepository.readPage($scope.itemStart, $scope.itemsShow).then(function (res) {
+      $scope.transactions = res.results;
+      $scope.totalItems = res.count;
+      return res;
+    });
+  };
+
+  $scope.renderPage($scope.activePage);
 
   $scope.updateLabel = function (transaction, editData) {
     transaction.labels = editData;
@@ -145,6 +161,39 @@ app.directive('notify', ['$templateCache', 'notifyService', function ($templateC
 }]);
 'use strict';
 
+app.directive('pagination', ['$templateCache', function ($templateCache) {
+  return {
+    restrict: 'E',
+    scope: {
+      totalItems: '=',
+      itemsShow: '=',
+      activePage: '=',
+      goToPage: '&'
+    },
+    template: $templateCache.get("pagination.html"),
+    link: function link(scope, element, attrs) {
+
+      scope.pages = [];
+
+      scope.makePages = function (pages) {
+        for (var i = 0; i < pages; i++) {
+          scope.pages.push(i + 1);
+        }
+      };
+
+      scope.$watchGroup(['totalItems', 'itemsShow'], function () {
+        scope.makePages(Math.ceil(scope.totalItems / scope.itemsShow));
+      });
+
+      scope.goTo = function ($event, page) {
+        $event.preventDefault();
+        scope.goToPage({ 'page': page });
+      };
+    }
+  };
+}]);
+'use strict';
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 app.factory('TransactionEntity', function () {
@@ -214,6 +263,19 @@ app.factory('transactionRepository', ['transactionResource', 'TransactionMapper'
     }
 
     _createClass(transactionRepository, null, [{
+      key: 'readPage',
+
+
+      // READPAGE ->
+
+      value: function readPage(itemStart, itremsShow) {
+        var param = { 'skip': itemStart, 'limit': itremsShow };
+        return resourse.readPage(param).$promise.then(function (res) {
+          res.results = res.results.map(TransactionMapper.load);
+          return res;
+        });
+      }
+    }, {
       key: 'readAll',
       value: function readAll() {
         return resourse.readAll().$promise.then(function (res) {
@@ -224,9 +286,6 @@ app.factory('transactionRepository', ['transactionResource', 'TransactionMapper'
     }, {
       key: 'read',
       value: function read(id) {
-        function filterById(elem) {
-          return elem.objectId == id;
-        }
         var param = { 'readId': 'where={"objectId":"' + id + '"}' };
         return resourse.read(param).$promise.then(function (res) {
           res.results = res.results.map(TransactionMapper.load);
@@ -274,16 +333,25 @@ app.factory('transactionRepository', ['transactionResource', 'TransactionMapper'
 'use strict';
 
 app.factory('transactionResource', ['$resource', function ($resource) {
-  return $resource(API_HOST + '/Transaction/:objectId?:readId', { 'objectId': '@objectId' }, {
-    read: {
-      method: 'GET'
+  return $resource(API_HOST + '/Transaction/:objectId', { 'objectId': '@objectId' }, {
+    readPage: {
+      method: 'GET',
+      url: API_HOST + '/Transaction?skip=:skip&limit=:limit&count=1'
     },
+
+    read: {
+      method: 'GET',
+      url: API_HOST + '/Transaction/?:readId'
+    },
+
     readAll: {
       method: 'GET'
     },
+
     addTransaction: {
       method: 'POST'
     },
+
     updateTransaction: {
       method: 'PUT'
     }

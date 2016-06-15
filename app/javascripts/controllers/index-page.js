@@ -1,9 +1,26 @@
 app.controller('IndexPageController', 
-['$scope', 'transactionRepository', 'notifyService', ($scope, transactionRepository, notify) => {
+['$q', '$scope', 'transactionRepository', 'notifyService', ($q, $scope, transactionRepository, notify) => {
+  
   $scope.transactions = [];
-  transactionRepository.readAll().then((res) => {
-    $scope.transactions = res.results;
-  });
+  
+  // $scope.totalItems = 0;
+  $scope.itemStart = 0;
+  $scope.itemsShow = 5;
+  $scope.activePage = 1;
+
+
+  $scope.renderPage = function(page){
+    $scope.activePage = page;
+    $scope.itemStart = $scope.itemsShow * ($scope.activePage - 1);
+    transactionRepository.readPage($scope.itemStart, $scope.itemsShow).then((res) => {
+      $scope.transactions = res.results;
+      $scope.totalItems = res.count;
+      return res;
+    });
+  }
+
+  $scope.renderPage($scope.activePage);
+
   
   $scope.updateLabel = function(transaction, editData){
     transaction.labels = editData;

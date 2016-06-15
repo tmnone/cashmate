@@ -4,5 +4,7 @@ $fa-font-path: '../fonts';
 
 @import 'globals/helpers';
 
+@import 'bootstrap/pagination';
+
 @import 'components/edit-panel';
 @import 'components/notifies';

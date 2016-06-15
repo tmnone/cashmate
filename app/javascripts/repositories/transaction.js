@@ -2,6 +2,16 @@ app.factory('transactionRepository',
 ['transactionResource', 'TransactionMapper', (resourse, TransactionMapper) =>
   class transactionRepository {
 
+    // READPAGE ->
+
+    static readPage (itemStart, itremsShow) {
+      let param = {'skip': itemStart, 'limit': itremsShow};
+      return resourse.readPage(param).$promise.then((res) => {
+        res.results = res.results.map(TransactionMapper.load);
+        return res;
+      });
+    }
+
     static readAll () {
       return resourse.readAll().$promise.then((res) => {
         res.results = res.results.map(TransactionMapper.load);
@@ -10,7 +20,6 @@ app.factory('transactionRepository',
     }
 
     static read (id) {
-      function filterById(elem) { return elem.objectId == id }
       let param = {'readId':`where={"objectId":"${id}"}`};
       return resourse.read(param).$promise.then((res) => {
         res.results = res.results.map(TransactionMapper.load);

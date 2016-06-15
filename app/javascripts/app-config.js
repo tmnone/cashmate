@@ -10,6 +10,7 @@ app.config([
       }).otherwise({
         redirectTo: '/',
         templateUrl: '../pages/index.html',
+        // resolve: [''], 
         controller: 'IndexPageController'
       });
     $locationProvider.html5Mode();

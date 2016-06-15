@@ -1,0 +1,9 @@
+.pagination {
+  .active {
+    &, &:focus, &:hover {
+      color: $pagination-active-color;
+      background-color: $pagination-active-bg;
+      pointer-events: none;
+    }
+  }
+}
