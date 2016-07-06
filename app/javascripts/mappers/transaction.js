@@ -1,5 +1,6 @@
 app.factory('TransactionMapper', 
-['TransactionEntity', (TransactionEntity) =>
+['$rootScope', 'TransactionEntity', 
+($rootScope, TransactionEntity) =>
   class TransactionMapper {
     static load (transaction) {
       return new TransactionEntity(transaction);
@@ -9,8 +10,11 @@ app.factory('TransactionMapper',
         objectId:  transaction.objectId,
         label_ids: transaction.label_ids,
         labels:    transaction.labels.concat(),
-        user_id:   transaction.user_id,
-        // user:  {'objectId': 'BUPBw1HEox'},
+        owner:  {
+          __type: "Pointer", 
+          className: "_User", 
+          objectId: $rootScope.currentUser.userId
+        },
         date:      {
           "__type": "Date",
           "iso": transaction.date || new Date()

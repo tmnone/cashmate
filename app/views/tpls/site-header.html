@@ -1,0 +1,11 @@
+<header class="site-header" ng-if="user">
+  <br>
+  <div class="well"> 
+    <div class="row">
+      <div class="col-xs-8">
+        <h5>You logged as user: <span class="text-primary" ng-bind="user.username"></span></h5>
+      </div>
+      <div class="col-xs-4 text-right"><button class="btn btn-danger" ng-click="userSignOut()">Sign Out</button></div>
+    </div>
+  </div>
+</header><!-- /header -->

@@ -14,7 +14,7 @@ app.factory('notifyService',
     }
 
     remove (notify) {
-      _.remove(this.notifies, function(elem) {return elem === notify});
+      _.pull(this.notifies, notify);
     }
   }
 

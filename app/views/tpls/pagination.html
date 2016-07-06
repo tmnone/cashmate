@@ -1,7 +1,34 @@
 <div class="pagination-wrapper">
   <ul class="pagination">
-    <li ng-repeat="page in pages">
-      <a href="#" ng-class="{'active': page == activePage}" ng-click="goTo($event, page)">{{page}}</a>
+    <li>
+      <a href="#" class="fa fa-angle-double-left" 
+         ng-class="{'disabled': activePage == 1}" 
+         ng-click="goTo($event, 1)"></a>
     </li>
+
+    <li>
+      <a href="#" class="fa fa-angle-left" 
+         ng-class="{'disabled': activePage == 1}" 
+         ng-click="goTo($event, activePage - 1)"></a>
+    </li>
+    
+    <li ng-repeat="page in pages">
+      <a href="#" 
+         ng-class="{'active': page == activePage}" 
+         ng-click="goTo($event, page)">{{page}}</a>
+    </li>
+
+    <li>
+      <a href="#" class="fa fa-angle-right" 
+         ng-class="{'disabled': activePage == pages.length}"
+         ng-click="goTo($event, activePage + 1)"></a>
+    </li>
+    
+    <li>
+      <a href="#" class="fa fa-angle-double-right" 
+         ng-class="{'disabled': activePage == pages.length}" 
+         ng-click="goTo($event, pages.length)"></a>
+    </li>
+
   </ul>
 </div>

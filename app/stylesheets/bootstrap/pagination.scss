@@ -6,4 +6,9 @@
       pointer-events: none;
     }
   }
+  .disabled {
+    color: $pagination-disabled-color;
+    background-color: $pagination-disabled-bg;
+    pointer-events: none;
+  }
 }

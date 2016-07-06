@@ -3,16 +3,26 @@ app.factory('transactionResource', [ '$resource', ($resource) => {
     {
       readPage: {
         method: 'GET',
-        url: API_HOST + '/Transaction?skip=:skip&limit=:limit&count=1'
+        params: {
+          where: '@where',
+          skip: '@skip',
+          limit: '@limit',
+          count: 1
+        }
       },
 
       read: {
         method: 'GET',
-        url: API_HOST + '/Transaction/?:readId'
+        params: {
+          where: '@where'
+        }
       },
 
       readAll: {
-        method: 'GET'
+        method: 'GET',
+        params: {
+          where: '@where'
+        }
       },
 
       addTransaction: {

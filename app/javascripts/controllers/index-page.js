@@ -1,12 +1,14 @@
 app.controller('IndexPageController', 
-['$q', '$scope', 'transactionRepository', 'notifyService', ($q, $scope, transactionRepository, notify) => {
+['$rootScope', '$scope', 'userRepository', 'transactionRepository', 'notifyService',
+($rootScope, $scope, userRepository, transactionRepository, notify) => {
+
+  $scope.user = $rootScope.currentUser;
   
   $scope.transactions = [];
-  
-  // $scope.totalItems = 0;
   $scope.itemStart = 0;
-  $scope.itemsShow = 5;
+  $scope.itemsShow = 4;
   $scope.activePage = 1;
+
 
 
   $scope.renderPage = function(page){

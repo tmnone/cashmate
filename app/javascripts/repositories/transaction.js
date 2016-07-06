@@ -1,57 +1,60 @@
 app.factory('transactionRepository', 
-['transactionResource', 'TransactionMapper', (resourse, TransactionMapper) =>
+['$rootScope', 'transactionResource', 'TransactionMapper', 'userMapper',
+($rootScope, resourse, TransactionMapper, userMapper) =>
   class transactionRepository {
 
-    // READPAGE ->
-
-    static readPage (itemStart, itremsShow) {
-      let param = {'skip': itemStart, 'limit': itremsShow};
-      return resourse.readPage(param).$promise.then((res) => {
+    static readPage (skip, limit) {
+      let params = {
+        "skip": skip, 
+        "limit": limit,
+        "where": {"owner":{"__type": "Pointer", "className": "_User", "objectId": $rootScope.currentUser.userId}}
+      };
+      return resourse.readPage(params).$promise.then((res) => {
         res.results = res.results.map(TransactionMapper.load);
         return res;
       });
     }
 
     static readAll () {
-      return resourse.readAll().$promise.then((res) => {
+      let where = {"owner": {"__type": "Pointer", "className": "_User", "objectId": $rootScope.currentUser.userId}};
+      return resourse.readAll({where}).$promise.then((res) => {
         res.results = res.results.map(TransactionMapper.load);
         return res;
       });
     }
 
     static read (id) {
-      let param = {'readId':`where={"objectId":"${id}"}`};
-      return resourse.read(param).$promise.then((res) => {
+      let where = {"objectId": id};
+      return resourse.read({where}).$promise.then((res) => {
         res.results = res.results.map(TransactionMapper.load);
         return res;
       });
     }
 
     static addTransaction (transaction) {
-      console.log('add', TransactionMapper.normalize(transaction));
       return resourse.addTransaction(TransactionMapper.normalize(transaction)).$promise
     }
 
     static updateTransactionNote (transaction) {
-      let params = {'objectId': transaction.objectId};
-      let data   = {'note': transaction.note};
+      let params = {"objectId": transaction.objectId};
+      let data   = {"note": transaction.note};
       return resourse.updateTransaction(params, data).$promise
     }
 
     static updateTransactionValue (transaction) {
-      let params = {'objectId': transaction.objectId};
-      let data   = {'value': +transaction.value};
+      let params = {"objectId": transaction.objectId};
+      let data   = {"value": +transaction.value};
       return resourse.updateTransaction(params, data).$promise
     }
 
     static updateTransactionLabel (transaction) {
-      let params = {'objectId': transaction.objectId};
-      let data   = {'labels': transaction.labels};
+      let params = {"objectId": transaction.objectId};
+      let data   = {"labels": transaction.labels};
       return resourse.updateTransaction(params, data).$promise
     }
 
     static updateTransaction (transaction) {
-      let params = {'objectId': transaction.objectId};
+      let params = {"objectId": transaction.objectId};
       return resourse.updateTransaction(params, TransactionMapper.normalize(transaction)).$promise
     }
   }
