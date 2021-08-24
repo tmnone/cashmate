@@ -1,4 +1,4 @@
-## Getting started
+## Getting started!
 ### 1. [Install node.js](http://nodejs.org/)
 ### 2. Install [gulp.js](http://gulpjs.com/)
 `npm install --global gulp`
